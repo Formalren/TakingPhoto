@@ -62,26 +62,25 @@ Gradle 8.0+
 ### 模拟器运行说明 (重要)
 如果你在 Android 模拟器上运行，默认情况下可能会显示绿色背景或黑屏。请按照以下步骤配置：
 
-打开 Device Manager -> 编辑模拟器 (Edit)。
+1. 打开 Device Manager -> 编辑模拟器 (Edit)。
 
-点击 Show Advanced Settings。
+2. 点击 Show Advanced Settings。
 
-将 Camera Back 设置从 VirtualScene 改为 Webcam0 (使用电脑摄像头)。
+3. 将 Camera Back 设置从 VirtualScene 改为 Webcam0 (使用电脑摄像头)。
 
-冷启动 (Cold Boot) 模拟器。
+4. 冷启动 (Cold Boot) 模拟器。
 
-核心代码片段
 
 ## 📝 版本历史
 v1.0.0
 
-完成基础拍摄功能。
+1. 完成基础拍摄功能。
 
-接入 Room 数据库。
+2. 接入 Room 数据库。
 
-实现 LRU 存储淘汰策略。
+3. 实现 LRU 存储淘汰策略。
 
-修复 Android 15 .so 库 16KB 对齐问题 (CameraX 1.4.0)。
+4. 修复 Android 15 .so 库 16KB 对齐问题 (CameraX 1.4.0)。
 
 ## 📄 License
 Apache License 2.0
