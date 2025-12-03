@@ -1,40 +1,44 @@
-# 📹 TikTok-Lite (Android Camera Demo)
+# TakePhoto Demo (Android CameraX Sample)
 
-> 一个基于 **CameraX** + **Room** + **Java** 实现的简易短视频拍摄应用。
-> 实现了类似抖音的拍摄流程，包含实时取景、拍照/录像、滤镜特效以及自定义的存储淘汰策略。
+📸 **TakePhoto** 是一个基于 Android Jetpack **CameraX** 库开发的相机应用示例。
 
-## 📖 项目简介 (Introduction)
+该项目重点展示了如何在 Android 10+ (API 29+) 设备上正确处理**分区存储 (Scoped Storage)**，实现了照片/视频的拍摄、滤镜处理、以及系统相册的混合媒体调用与预览。
 
-本项目是一个 Android 原生相机应用 Demo，演示了如何使用 Google 官方推荐的 **CameraX** 库进行多媒体开发。项目不依赖大型第三方框架，从零实现了相机预览、媒体采集、本地数据库存储以及一套**自研的文件存储管理与淘汰算法**。
-
-主要用于展示 Android 多媒体开发、数据库操作以及架构设计的最佳实践。
+---
 
 ## 📱 功能特性 (Features)
 
-* **📸 高清拍摄**：支持高清拍照 (Photo) 和 视频录制 (Video)。
-* **🔄 镜头切换**：支持前置/后置摄像头一键切换。
-* **✨ 实时特效**：
-    * 集成 `ColorMatrix` 实现实时 **黑白滤镜 (B&W Filter)**。
-    * 支持在预览流中直接查看特效，并保存带特效的截图。
-* **💾 数据持久化**：
-    * 使用 **Room Database** 保存媒体文件的元数据（路径、类型、时间戳）。
-    * 使用 **Java NIO** 进行文件操作。
-* **🧹 智能存储管理 (自研)**：
-    * 实现了 `CustomStorageManager`。
-    * **淘汰策略**：当缓存目录超过阈值 (500MB) 时，自动查询数据库中时间戳最早的文件进行删除，直到空间释放至安全水位 (80%)。
-* **🛠️ 兼容性适配**：
-    * 适配 **Android 15 (API 35)** 的 16KB Page Size 要求。
-    * 解决模拟器环境下的预览黑屏/绿屏问题。
+* **📷 高清拍照 (Photo Capture)**
+    * 使用 `ImageCapture` 用例。
+    * 支持前后置摄像头切换。
+    * **存储优化**：通过 `MediaStore` API 将照片直接保存至系统公共目录 (`Pictures/MyCameraApp`)，相册立即可见。
+* **🎥 视频录制 (Video Recording)**
+    * 使用 `VideoCapture` 用例。
+    * 支持带音频的高清录制。
+    * **存储优化**：视频自动保存至系统公共目录 (`Movies/MyCameraApp`)。
+* **🎨 实时/后期滤镜 (Filters)**
+    * 演示了获取当前 `ViewFinder` 的 Bitmap 并应用黑白滤镜 (B&W Filter) 的逻辑。
+    * 滤镜照片同样通过 `ContentResolver` 插入系统相册。
+* **🖼️ 混合相册跳转 (Gallery Integration)**
+    * 使用 `ActivityResultLauncher` 替代过时的 `startActivityForResult`。
+    * 支持 `*/*` MIME 类型，同时筛选显示图片和视频。
+* **👁️ 应用内预览 (In-App Preview)**
+    * 从相册返回后，直接在当前页面覆盖预览层。
+    * 自动识别媒体类型：图片使用 `ImageView` 显示，视频使用 `VideoView` 自动循环播放。
 
-## 🛠 技术栈 (Tech Stack)
+---
 
-* **语言**: Java 8+
-* **核心组件**:
-    * [CameraX](https://developer.android.com/training/camerax) (v1.4.0) - 相机预览与生命周期绑定
-    * [Jetpack Room](https://developer.android.com/training/data-storage/room) (v2.6.1) - ORM 数据库
-    * [ViewBinding](https://developer.android.com/topic/libraries/view-binding) - UI 绑定
-* **异步处理**: `ExecutorService` (线程池) / `ListenableFuture`
-* **架构模式**: MVVM (View - Dao - Utils)
+## 🛠️ 技术栈 (Tech Stack)
+
+* **Language**: Java
+* **Camera**: [Android Jetpack CameraX](https://developer.android.com/training/camerax) (Preview, ImageCapture, VideoCapture)
+* **UI Architecture**: ViewBinding
+* **Storage**: Android MediaStore API (ContentResolver & ContentValues) - **适配 Android 10/11/12/13+ 分区存储**
+* **Permission**: Runtime Permissions (Camera, Audio, Storage)
+* **Interaction**: ActivityResultContracts (New Intent API)
+
+---
+
 
 ## 📂 项目结构 (Project Structure)
 
@@ -51,36 +55,33 @@ com.example.takephoto
 
 ## 🚀 快速开始 (Getting Started)
 ### 环境要求
-Android Studio Ladybug | 2024.2.1+
+1. Android Studio Ladybug | 2024.2.1 或更高版本
 
-minSdk 24
+2. minSdkVersion 21
 
-targetSdk 34 (或更高)
+3. targetSdkVersion 34 (Android 14)
 
-Gradle 8.0+
+### 安装步骤
+1. Clone 本仓库到本地：
+```text
+git clone [https://github.com/your-username/TakePhoto.git](https://github.com/your-username/TakePhoto.git)
+```
 
-### 模拟器运行说明 (重要)
-如果你在 Android 模拟器上运行，默认情况下可能会显示绿色背景或黑屏。请按照以下步骤配置：
+2. 在 Android Studio 中打开项目。
 
-1. 打开 Device Manager -> 编辑模拟器 (Edit)。
+3. 连接真机或使用模拟器（建议使用真机以测试相机功能）。
 
-2. 点击 Show Advanced Settings。
-
-3. 将 Camera Back 设置从 VirtualScene 改为 Webcam0 (使用电脑摄像头)。
-
-4. 冷启动 (Cold Boot) 模拟器。
+4. 运行 App，并授予 相机 和 麦克风 权限。
 
 
 ## 📝 版本历史
 v1.0.0
 
-1. 完成基础拍摄功能。
+1. 完成拍摄、录像功能、相册、翻转镜头、取景增加黑白特效。
 
 2. 接入 Room 数据库。
 
 3. 实现 LRU 存储淘汰策略。
-
-4. 修复 Android 15 .so 库 16KB 对齐问题 (CameraX 1.4.0)。
 
 ## 📄 License
 Apache License 2.0
