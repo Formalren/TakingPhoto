@@ -3,9 +3,9 @@
 📸 **TakePhoto** 是一个基于 Android Jetpack **CameraX** 库开发的相机应用示例。
 
 该项目重点展示了如何在 Android 10+ (API 29+) 设备上正确处理**分区存储 (Scoped Storage)**，实现了照片/视频的拍摄、滤镜处理、以及系统相册的混合媒体调用与预览。
-
+### 拍照展示
+<img width="715" height="1178" alt="TakingPhoto" src="https://github.com/user-attachments/assets/371cc0dc-63d2-43cb-b68a-87f818c4fc3d" />
 ---
-
 ## 📱 功能特性 (Features)
 
 * **📷 高清拍照 (Photo Capture)**
